@@ -5,23 +5,22 @@ import (
 )
 
 type fzf struct {
-	searchPaths  []string
-	selectedPath selectedPath
+	paths []string
 }
 
-func (fzf *fzf) addSearchPath(searchPath string) {
-	fzf.searchPaths = append(fzf.searchPaths, searchPath)
+func (fzf *fzf) addPath(path string) {
+	fzf.paths = append(fzf.paths, path)
 }
 
-func (fzf *fzf) selectPath() {
+func (fzf *fzf) selectPath() (selectedPath, error) {
 	cmd := stringCommand{
-		command: "find " + strings.Join(fzf.searchPaths, " ") + " -mindepth 1 -maxdepth 1 -type d | fzf",
+		command: "find " + strings.Join(fzf.paths, " ") + " -mindepth 1 -maxdepth 1 -type d | fzf",
 	}
 
 	path, err := cmd.out()
 	if err != nil {
-		return
+		return selectedPath{}, err
 	}
 
-	fzf.selectedPath = createPath(path)
+	return createPath(path), nil
 }

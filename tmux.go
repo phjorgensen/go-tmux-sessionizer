@@ -4,27 +4,27 @@ import (
 	"os"
 )
 
-type tmux struct {
-	sessionPath string
-	sessionName string
+type tmuxSession struct {
+	path string
+	name string
 }
 
-func (tmux *tmux) connect() {
-	if !tmux.isRunning() || !tmux.hasSession() {
-		tmux.createSession()
+func (s *tmuxSession) connect() {
+	if !s.isRunning() || !s.hasSession() {
+		s.createSession()
 	}
 
-	if tmux.isConnected() {
-		tmux.switchToSession()
+	if s.isConnected() {
+		s.switchToSession()
 	} else {
-		tmux.attachToSession()
+		s.attachToSession()
 	}
 }
 
-func (tmux *tmux) hasSession() bool {
+func (s *tmuxSession) hasSession() bool {
 	cmd := arrayCommand{
 		name:    "tmux",
-		command: []string{"has-session", "-t=" + tmux.sessionName},
+		command: []string{"has-session", "-t=" + s.name},
 	}
 
 	_, err := cmd.out()
@@ -36,7 +36,7 @@ func (tmux *tmux) hasSession() bool {
 	}
 }
 
-func (tmux *tmux) isRunning() bool {
+func (s *tmuxSession) isRunning() bool {
 	cmd := arrayCommand{
 		name:    "pgrep",
 		command: []string{"tmux"},
@@ -50,33 +50,33 @@ func (tmux *tmux) isRunning() bool {
 	return processes != ""
 }
 
-func (tmux *tmux) isConnected() bool {
+func (s *tmuxSession) isConnected() bool {
 	tmuxEnv := os.Getenv("TMUX")
 	return tmuxEnv != ""
 }
 
-func (tmux *tmux) createSession() {
+func (s *tmuxSession) createSession() {
 	cmd := arrayCommand{
 		name:    "tmux",
-		command: []string{"new-session", "-ds", tmux.sessionName, "-c", tmux.sessionPath},
+		command: []string{"new-session", "-ds", s.name, "-c", s.path},
 	}
 
 	cmd.run()
 }
 
-func (tmux *tmux) attachToSession() {
+func (s *tmuxSession) attachToSession() {
 	cmd := arrayCommand{
 		name:    "tmux",
-		command: []string{"a", "-t", tmux.sessionName},
+		command: []string{"a", "-t", s.name},
 	}
 
 	cmd.run()
 }
 
-func (tmux *tmux) switchToSession() {
+func (s *tmuxSession) switchToSession() {
 	cmd := arrayCommand{
 		name:    "tmux",
-		command: []string{"switch-client", "-t", tmux.sessionName},
+		command: []string{"switch-client", "-t", s.name},
 	}
 
 	cmd.run()

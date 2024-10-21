@@ -1,18 +1,25 @@
 package main
 
+import "log"
+
 func main() {
-	f := fzf{}
+	f := fzf{
+		paths: []string{
+			"~/",
+			"~/Projects",
+			"~/Documents",
+			"~/Documents/notes",
+		},
+	}
 
-	f.addSearchPath("~/")
-	f.addSearchPath("~/Projects")
-	f.addSearchPath("~/Documents")
-	f.addSearchPath("~/Documents/notes")
+	path, err := f.selectPath()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	f.selectPath()
-
-	t := tmux{
-		sessionName: f.selectedPath.formatName(),
-		sessionPath: f.selectedPath.path,
+	t := tmuxSession{
+		name: path.formatName(),
+		path: path.path,
 	}
 
 	t.connect()
