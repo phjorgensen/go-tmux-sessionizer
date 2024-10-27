@@ -1,14 +1,14 @@
-# Go TMUX sessionizer
+# Go tmux sessionizer
 
-> [!Notice]
+> [!WARNING]
 > This project is under very active development, it works as expected in its current state, but major breaking changes may come later.
 
-This is a CLI utility based on the `tmux-sessionizer` [script](https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer) from ThePrimeagen. I've written this in Go, for fun and to learn Go.
+This is a CLI utility based on the `tmux-sessionizer` [script](https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer) from ThePrimeagen. I've written this in Go, for fun and to learn Go.\
 Running the script will display a list of directories, selecting one of the directories will create and switch to a new tmux session in that directory.
 
 ## Config
 
-It will look for a config file in `~/.config/tmux-sessionizer/config.json` in the following format.
+It will look for `config.json` in `~/.config/tmux-sessionizer` in the following format.
 
 ```json
 {
@@ -20,9 +20,9 @@ The sessionizer will display all the directories from the paths listed in the `p
 
 ## Usage
 
-### Add the script to your $PATH
+### Add the script to your `$PATH`
 
-I've added the script to my `~/.local/bin` folder, and added that folder to my `$PATH`. That way I can easily add more scripts to my `$PATH` in the future.
+I've added the script to my `~/.local/bin` directory, and added that directory to my `$PATH`. That way I can easily add more scripts to my `$PATH` in the future.
 
 ### Run from terminal
 
