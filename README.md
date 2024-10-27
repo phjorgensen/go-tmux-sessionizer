@@ -25,9 +25,15 @@ The sessionizer will display all the directories from the paths listed in the `p
 
 I've added the script to my `~/.local/bin` directory, and added that directory to my `$PATH`. That way I can easily add more scripts to my `$PATH` in the future.
 
+You can do the same by adding this line to your `~/.zshrc` or `~/.bashrc` file (depending on which shell your using).
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
 ### Run from terminal
 
-By adding this line to your `~/.zshrc` or `~/.bashrc` file (depending on which shell your using.), you can run the script by pressing the `Ctrl`+`f` shortcut in your terminal.
+By adding this line to your `~/.zshrc` or `~/.bashrc` file (depending on which shell your using), you can run the script by pressing the `Ctrl`+`f` shortcut in your terminal.
 
 ```bash
 bindkey -s ^f "go-tmux-sessionizer\n"
