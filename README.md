@@ -5,6 +5,7 @@
 
 This is a CLI utility based on the `tmux-sessionizer` [script](https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer) from ThePrimeagen. I've written this in Go, for fun and to learn Go.\
 Running the script will display a list of directories, selecting one of the directories will create and switch to a new tmux session in that directory.
+If a session already exists for the selected session, it will switch to the existing sesison instead of creating a new one.
 
 ## Config
 
