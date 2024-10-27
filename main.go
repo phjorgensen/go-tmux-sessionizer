@@ -1,20 +1,15 @@
 package main
 
-import "log"
-
 func main() {
+	conf := getConfig()
+
 	f := fzf{
-		paths: []string{
-			"~/",
-			"~/Projects",
-			"~/Documents",
-			"~/Documents/notes",
-		},
+		paths: conf.Paths,
 	}
 
 	path, err := f.selectPath()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	t := tmuxSession{
