@@ -50,5 +50,24 @@ bind-key -r f run-shell "tmux neww go-tmux-sessionizer"
 
 ## Dependencies
 
-- [`tmux`](https://github.com/tmux/tmux/wiki)
+- [`tmux`](https://github.com/tmux/tmux)
 - [`fzf`](https://github.com/junegunn/fzf)
+
+## Future improvements
+
+- Better arguments with [cobra](https://github.com/spf13/cobra)
+- Better config with [viper](https://github.com/spf13/viper)
+- Initial sessions to be created
+  - Configurable of course
+  - When should they be created
+    - Every time the script is run?
+  - Need a way to reference the sessions
+    - fzf will search directories and create a session based on directory name.
+      - Pass a list of initial sessions to fzf, along with the paths supplied?
+    - The initial sessions may depend on functionality, rather than directory location.
+    - They may have custom names like "today" or "todo".
+  - Example use cases
+    - Daily note
+    - Todo list
+    - Dotfiles directory
+- Plugin system?
