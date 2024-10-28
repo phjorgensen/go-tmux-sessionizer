@@ -64,6 +64,7 @@ bind-key -r f run-shell "tmux neww go-tmux-sessionizer"
   - Need a way to reference the sessions
     - fzf will search directories and create a session based on directory name.
       - Pass a list of initial sessions to fzf, along with the paths supplied?
+        - In this case, I may not need to initialize the sessions until they are selected from the list.
     - The initial sessions may depend on functionality, rather than directory location.
     - They may have custom names like "today" or "todo".
   - Example use cases
