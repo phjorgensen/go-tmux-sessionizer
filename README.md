@@ -72,3 +72,37 @@ bind-key -r f run-shell "tmux neww go-tmux-sessionizer"
     - Todo list
     - Dotfiles directory
 - Plugin system?
+
+### Custom sessions that can be created
+
+I'm noticing a problem with connecting the search directly with directory paths.
+
+- What if you want to create two different sessions in the same directory?
+- What if the session you want to create doesn't really have a direct connection to the directory itself?
+
+My specific issue is when I'm using my note CLI tool, `nb`. It always works with notebooks I have defined in a specific directory, no matter what my current directory is, so the directory doesn't really matter.
+It also supports local notebooks, which means that if I'm in a directory that is a notebook it will treat that notebook as the default and it will not let you change to another notebook. So I don't really want to be in the notebook directory either, as it block me from changing notebooks quickly.
+So what I really need is some generic directory, like `$HOME`, with a custom session name so I can have multiple of them without stopping me from creating a session in `$HOME` if I would need that at some point.
+
+A solution could be to add a way to specify custom sessions in the config file.
+
+#### Config file
+
+Define two custom sessions with the names "nb-work" and "nb-personal" that opens a session in `$HOME`.
+
+```json
+{
+  "customSessions": {
+    "nb-work": "~/",
+    "nb-personal": "~/"
+  }
+}
+```
+
+#### Usage
+
+This will open the session as if you had gone through the normal flow and selected this option from the `fzf`-list. This makes it really simple to bind to a key-bind in your shell.
+
+```bash
+go-tmux-sessionizer --custom "nb-work"
+```
