@@ -9,18 +9,55 @@ If a session already exists for the selected session, it will switch to the exis
 
 ## Dependencies
 
-- [`tmux`](https://github.com/tmux/tmux/wiki) - This is a sessionizer for TMUX, got to have TMUX.
+- [`tmux`](https://github.com/tmux/tmux/wiki) - This is a sessionizer for tmux, got to have tmux.
 - [`fzf`](https://github.com/junegunn/fzf) - For searching and listing directories.
 
 ## Config
 
-The script will look for a `config.toml` file in the `~/.config/tmux-sessionizer` directory in the following format.
+The script will look for `~/.config/tmux-sessionizer/config.toml` in the following format.
 
 ```toml
 paths = ["~/", "~/Projects", "~/Documents", "~/Documents/notes"]
 ```
 
-The sessionizer will display all the directories from the paths listed in the `paths` array.
+### paths
+
+When running the script without any flags, the sessionizer will list all the immediate sub-directories of the paths defined in the `paths` option.
+
+Given this structure:
+
+```
+~/
+  projects/
+    dotfiles/
+    portfolio/
+    index.html
+  documents/
+    notes/
+    pictures/
+    todo.md
+  downloads/
+    pictures/
+    videos/
+    Report_23.pdf
+```
+
+With this config:
+
+```toml
+paths = ["~/projects", "~/documents"]
+```
+
+The result will be this list of selectable options:
+
+```
+/home/username/projects/dotfiles
+/home/username/projects/portfolio
+/home/username/documents/notes
+/home/username/documents/pictures
+```
+
+Selecting one of the options will open a new tmux session in that directory.
 
 ## Usage
 
