@@ -7,14 +7,17 @@ This is a CLI utility based on the `tmux-sessionizer` [script](https://github.co
 Running the script will display a list of directories, selecting one of the directories will create and switch to a new tmux session in that directory.
 If a session already exists for the selected session, it will switch to the existing sesison instead of creating a new one.
 
+## Dependencies
+
+- [`tmux`](https://github.com/tmux/tmux/wiki) - This is a sessionizer for TMUX, got to have TMUX.
+- [`fzf`](https://github.com/junegunn/fzf) - For searching and listing directories.
+
 ## Config
 
-It will look for `config.json` in `~/.config/tmux-sessionizer` in the following format.
+The script will look for a `config.toml` file in the `~/.config/tmux-sessionizer` directory in the following format.
 
-```json
-{
-  "paths": ["~/", "~/Projects", "~/Documents", "~/Documents/notes"]
-}
+```toml
+paths = ["~/", "~/Projects", "~/Documents", "~/Documents/notes"]
 ```
 
 The sessionizer will display all the directories from the paths listed in the `paths` array.
@@ -48,10 +51,9 @@ The default tmux prefix is `Ctrl`+`b`, which means that pressing `Ctrl`+`b`, the
 bind-key -r f run-shell "tmux neww go-tmux-sessionizer"
 ```
 
-## Dependencies
+## Internal dependencies
 
-- [`tmux`](https://github.com/tmux/tmux)
-- [`fzf`](https://github.com/junegunn/fzf)
+- [Viper](https://github.com/spf13/viper)
 
 ## Future improvements
 

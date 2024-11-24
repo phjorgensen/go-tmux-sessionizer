@@ -1,10 +1,10 @@
 package main
 
 func main() {
-	conf := getConfig()
+	initConfig()
 
 	f := fzf{
-		paths: conf.Paths,
+		paths: getPaths(),
 	}
 
 	path, err := f.selectPath()
