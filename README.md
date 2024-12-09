@@ -90,12 +90,11 @@ bind-key -r f run-shell "tmux neww go-tmux-sessionizer"
 
 ## Internal dependencies
 
-- [Viper](https://github.com/spf13/viper)
+- [Viper](https://github.com/spf13/viper) for configuration.
+- [cobra](https://github.com/spf13/cobra) for arguments and flags.
 
 ## Future improvements
 
-- Better arguments with [cobra](https://github.com/spf13/cobra)
-- Better config with [viper](https://github.com/spf13/viper)
 - Initial sessions to be created
   - Configurable of course
   - When should they be created
