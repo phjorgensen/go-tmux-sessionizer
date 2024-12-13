@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"go-tmux-sessionizer/config"
-	"go-tmux-sessionizer/fzf"
 	"go-tmux-sessionizer/path"
 	"go-tmux-sessionizer/tmux"
 
@@ -29,21 +28,19 @@ var searchCmd = &cobra.Command{
 	Short: "Search for a directory to use for a session",
 	Long:  "This will search in the provided paths. If no paths are provided, it will use the paths in the config. It will use the defaults if no config is defined.",
 	Run: func(cmd *cobra.Command, args []string) {
-		// Do Stuff Here
-		fmt.Println(args)
-
-		f := fzf.Fzf{
-			Paths: config.GetPaths(),
-		}
-
-		path, err := f.SelectPath()
+		path, err := openFzf(config.GetPaths())
 		if err != nil {
 			log.Fatal(err)
 		}
 
+		name, err := path.GetName()
+		if err != nil {
+			log.Fatal("No name was set")
+		}
+
 		t := tmux.Session{
-			Name: path.FormatName(),
-			Path: path.Path,
+			Name: name,
+			Path: path.GetPath(),
 		}
 
 		t.Connect()
@@ -68,16 +65,18 @@ var openCmd = &cobra.Command{
 			log.Fatal("No path passed")
 		}
 
-		p := path.SelectedPath{
-			Path: firstArg,
+		p := path.SelectedPath{}
+		p.SetPath(firstArg)
+
+		name, err := p.GetName()
+		if err != nil {
+			log.Fatal("No name is available for the session.")
 		}
-		fmt.Println(p)
 
 		t := tmux.Session{
-			Name: p.FormatName(),
-			Path: p.Path,
+			Name: name,
+			Path: p.GetPath(),
 		}
-		fmt.Println(t)
 
 		t.Connect()
 	},
