@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -24,8 +23,6 @@ func Init() {
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal(err)
-	} else {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
 }
 
