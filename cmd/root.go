@@ -6,20 +6,30 @@ import (
 	"os"
 
 	"go-tmux-sessionizer/config"
-	"go-tmux-sessionizer/path"
+	"go-tmux-sessionizer/fzf"
 	"go-tmux-sessionizer/tmux"
 
 	"github.com/spf13/cobra"
 )
 
-var userLicense string
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func init() {
+	rootCmd.AddCommand(searchCmd)
+	rootCmd.AddCommand(openCmd)
+}
 
 var rootCmd = &cobra.Command{
 	Use:   "go-tmux-sessionizer",
 	Short: "CLI utility written in Go that makes it easy to handle tmux sessions.",
 	Long:  "This is a CLI utility written in Go that makes it easy to handle tmux sessions. Created by phjorgensen and inspired by ThePrimeagen.",
 	Run: func(cmd *cobra.Command, args []string) {
-		// Do Stuff Here
+		searchCmd.Run(cmd, args)
 	},
 }
 
@@ -28,22 +38,18 @@ var searchCmd = &cobra.Command{
 	Short: "Search for a directory to use for a session",
 	Long:  "This will search in the provided paths. If no paths are provided, it will use the paths in the config. It will use the defaults if no config is defined.",
 	Run: func(cmd *cobra.Command, args []string) {
-		path, err := openFzf(config.GetPaths())
+		path, err := fzf.Open(config.GetPaths())
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		name, err := path.GetName()
-		if err != nil {
-			log.Fatal("No name was set")
+		name := formatName(path)
+
+		if !tmux.HasSession(name) {
+			tmux.CreateSession(name, path)
 		}
 
-		t := tmux.Session{
-			Name: name,
-			Path: path.GetPath(),
-		}
-
-		t.Connect()
+		tmux.Connect(name)
 	},
 }
 
@@ -60,36 +66,17 @@ var openCmd = &cobra.Command{
 			log.Fatal("Too many arguments")
 		}
 
-		firstArg := args[0]
-		if firstArg == "" {
+		path := args[0]
+		if path == "" {
 			log.Fatal("No path passed")
 		}
 
-		p := path.SelectedPath{}
-		p.SetPath(firstArg)
+		name := formatName(path)
 
-		name, err := p.GetName()
-		if err != nil {
-			log.Fatal("No name is available for the session.")
+		if !tmux.HasSession(name) {
+			tmux.CreateSession(name, path)
 		}
 
-		t := tmux.Session{
-			Name: name,
-			Path: p.GetPath(),
-		}
-
-		t.Connect()
+		tmux.Connect(name)
 	},
-}
-
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-}
-
-func init() {
-	rootCmd.AddCommand(searchCmd)
-	rootCmd.AddCommand(openCmd)
 }

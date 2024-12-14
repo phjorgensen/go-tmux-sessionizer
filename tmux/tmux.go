@@ -5,27 +5,18 @@ import (
 	"os"
 )
 
-type Session struct {
-	Path string
-	Name string
-}
-
-func (s *Session) Connect() {
-	if !s.isRunning() || !s.hasSession() {
-		s.createSession()
-	}
-
-	if s.isConnected() {
-		s.switchToSession()
+func Connect(name string) {
+	if isConnected() {
+		switchToSession(name)
 	} else {
-		s.attachToSession()
+		attachToSession(name)
 	}
 }
 
-func (s *Session) hasSession() bool {
+func HasSession(name string) bool {
 	cmd := exec.ArrayCommand{
 		Name:    "tmux",
-		Command: []string{"has-session", "-t=" + s.Name},
+		Command: []string{"has-session", "-t=" + name},
 	}
 
 	_, err := cmd.Out()
@@ -37,47 +28,33 @@ func (s *Session) hasSession() bool {
 	}
 }
 
-func (s *Session) isRunning() bool {
+func CreateSession(name string, path string) {
 	cmd := exec.ArrayCommand{
-		Name:    "pgrep",
-		Command: []string{"tmux"},
+		Name:    "tmux",
+		Command: []string{"new-session", "-ds", name, "-c", path},
 	}
 
-	processes, err := cmd.Out()
-	if err != nil {
-		return false
-	}
-
-	return processes != ""
+	cmd.Run()
 }
 
-func (s *Session) isConnected() bool {
+func isConnected() bool {
 	tmuxEnv := os.Getenv("TMUX")
 	return tmuxEnv != ""
 }
 
-func (s *Session) createSession() {
+func attachToSession(name string) {
 	cmd := exec.ArrayCommand{
 		Name:    "tmux",
-		Command: []string{"new-session", "-ds", s.Name, "-c", s.Path},
+		Command: []string{"a", "-t", name},
 	}
 
 	cmd.Run()
 }
 
-func (s *Session) attachToSession() {
+func switchToSession(name string) {
 	cmd := exec.ArrayCommand{
 		Name:    "tmux",
-		Command: []string{"a", "-t", s.Name},
-	}
-
-	cmd.Run()
-}
-
-func (s *Session) switchToSession() {
-	cmd := exec.ArrayCommand{
-		Name:    "tmux",
-		Command: []string{"switch-client", "-t", s.Name},
+		Command: []string{"switch-client", "-t", name},
 	}
 
 	cmd.Run()
