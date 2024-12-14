@@ -10,10 +10,10 @@ func Open(paths []string) (string, error) {
 		Command: "find " + strings.Join(paths, " ") + " -mindepth 1 -maxdepth 1 -type d | fzf",
 	}
 
-	selectedPath, err := cmd.Out()
+	path, err := cmd.Out()
 	if err != nil {
 		return "", err
 	}
 
-	return selectedPath, nil
+	return path, nil
 }
