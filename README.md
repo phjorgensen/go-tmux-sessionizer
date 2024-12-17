@@ -110,3 +110,4 @@ bind-key -r f run-shell "tmux neww go-tmux-sessionizer"
     - Todo list
     - Dotfiles directory
 - Plugin system?
+- Paths to ignore?
